@@ -1,0 +1,55 @@
+@(allSearchResultsByQuery: Map[String, List[Map[String, String]]])
+
+@main("YouTube Search Results") {
+<!-- Search form to allow new queries directly from the results page -->
+<div style="text-align: center; margin-top: 20px;">
+    <form action="@routes.HomeController.search("")" method="GET" style="display: inline-block;">
+    <input type="text" name="query" placeholder="Enter new search keywords" required style="margin-bottom: 10px; width: 400px; text-align: center;"/>
+    <div>
+        <button type="submit" style="margin-right: 10px;">Search</button>
+        <button type="button" onclick="window.location='@routes.HomeController.clearHistory()'">Clear History</button>
+    </div>
+    </form>
+</div>
+
+<!-- Display results grouped by each search term -->
+@for((query, videoList) <- allSearchResultsByQuery) {
+<details>
+    <summary style="cursor: pointer; font-size: 1.5em; font-weight: bold; margin-left: 15px;">Search terms: "@query"</summary>
+    <p style="margin-left: 15px;">Flesh-Kincaid Grade Level Avg. = ##, Flesch Reading Ease Score Avg. = ##. <a href="#">More stats</a></p>
+
+    <!-- Display video search results for the current query -->
+    @for((video, index) <- videoList.zipWithIndex) {
+    <div style="margin-left: 50px; margin-bottom: 20px;">
+        <div style="display: flex; align-items: flex-start;">
+            <div style="flex: 1; margin-right: 20px;">
+                <p><strong>@(index + 1). Title:</strong>
+                    <a href="https://www.youtube.com/watch?v=@video.get("videoId")" target="_blank">
+                    @video.get("title")
+                    </a>
+                </p>
+                <p><strong>Channel:</strong>
+                    <a href="https://www.youtube.com/channel/@video.get("channelId")" target="_blank">
+                    @video.get("channelTitle")
+                    </a>
+                </p>
+                <p><strong>Description:</strong> "@video.get("description")".</p>
+                <p><strong>Tags:</strong> <a href="#">Tags</a></p>
+                <p><strong>Flesch-Kincaid Grade Level</strong> = ##, <strong>Flesch Reading Ease Score</strong> = ##. <a href="#">More stats</a></p>
+            </div>
+            <div style="flex: 0 0 120px;"> <!-- Fixed width for thumbnail -->
+                <img src="@video.get("thumbnailUrl")" alt="Thumbnail" style="width: 120px; height: 90px; margin-right: 25px"/>
+            </div>
+        </div>
+    </div>
+    }
+</details>
+
+<hr/>  <!-- Separate results by search terms -->
+}
+
+<!-- Center the copyright label -->
+<footer style="text-align: center; margin-top: 20px;">
+    <p>&copy; 2024 Hello World. All rights reserved.</p>
+</footer>
+}

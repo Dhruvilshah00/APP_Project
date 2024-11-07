@@ -1,0 +1,22 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET     /                           controllers.HomeController.index()
+GET     /search                     controllers.HomeController.search(query: String)
+GET     /clearHistory               controllers.HomeController.clearHistory()
+# Route to display channel info and videos
+GET     /channel/:channelId        controllers.HomeController.getChannelInfo(channelId: String)
+# Route for viewing video tags
+GET     /video/tags/:videoId/:videoTitle/:channelTitle/:channelId                  controllers.HomeController.viewVideoTags(videoId: String, videoTitle: String, channelTitle: String,channelId: String)
+
+# Route for searching videos by tag
+GET     /search/tag/:tag                         controllers.HomeController.searchByTag(tag: String)
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file     controllers.Assets.versioned(path="/public", file: Asset)
+GET     /wordstats/:keyword       controllers.HomeController.getWordStats(keyword: String)
+GET     /search                controllers.HomeController.search(query: String)

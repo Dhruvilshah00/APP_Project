@@ -1,0 +1,26 @@
+@(channelData: Map[String, String], videoList: List[Map[String, String]])
+
+@main("Channel Info") {
+<div style="text-align: center; margin-bottom: 20px;">
+    <h1>@channelData.getOrElse("title", "No Title")</h1>
+    <img src="@channelData.getOrElse("thumbnailUrl", "")" alt="Channel Thumbnail" style="width: 120px; height: 90px; border-radius: 5px;"/>
+</div>
+<p>@channelData.getOrElse("description", "No Description Available")</p>
+<p><strong>Subscribers:</strong> @channelData.getOrElse("subscriberCount", "N/A")</p>
+
+<h2>Latest Videos</h2>
+<ul style="list-style-type: none; padding: 0;">
+    @for((video, index) <- videoList.zipWithIndex) {
+    <li style="display: flex; align-items: center; margin-bottom: 20px; background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+        <div style="flex: 1;">
+            <h3>
+                <a href="https://www.youtube.com/watch?v=@video.getOrElse("videoId", "")" target="_blank" style="color: black;">@video.getOrElse("title", "No Title")</a>
+            </h3>
+            <p>Channel: <a href="#" style="color: red;">@channelData.getOrElse("title", "No Channel Title")</a></p>
+            <p style="color: #424242;"><strong>Description:</strong> @video.getOrElse("description", "No description")</p>
+        </div>
+        <img src="@video.getOrElse("thumbnailUrl", "")" alt="Thumbnail" style="width: 120px; height: 90px; border-radius: 5px; margin-left: 20px;"/>
+    </li>
+    }
+</ul>
+}

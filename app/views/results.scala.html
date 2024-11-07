@@ -1,0 +1,72 @@
+@*
+* Styled page for displaying YouTube search results.
+*
+* @param allSearchResultsByQuery A map containing search queries and their corresponding video results
+* @param sentiment The overall sentiment for the current search query
+* @param avgFleschKincaid Average Flesch-Kincaid Grade Level for the descriptions
+* @param avgFleschReadingEase Average Flesch Reading Ease Score for the descriptions
+*@
+@(allSearchResultsByQuery: Map[String, List[Map[String, String]]], sentiment: String, avgFleschKincaid: Double, avgFleschReadingEase: Double)
+
+@main("YouTube Search Results") {
+<div style="text-align: center; margin-top: 20px;">
+    <form action="@routes.HomeController.search("")" method="GET" style="display: inline-block; margin-bottom: 20px;">
+    <input type="text" name="query" placeholder="Enter new search keywords" required
+           style="width: 60%; padding: 10px; border-radius: 5px; border: 1px solid #b71c1c; text-align: center;"/>
+    <br/>
+    <button type="submit"
+            style="margin-top: 10px; background-color: #b71c1c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+        Search
+    </button>
+    <button type="button" onclick="window.location='@routes.HomeController.clearHistory()'"
+            style="background-color: #757575; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+        Clear History
+    </button>
+    </form>
+</div>
+
+@for((query, videoList) <- allSearchResultsByQuery) {
+<details style="margin-top: 20px;">
+    <summary style="cursor: pointer; font-size: 1.3em; font-weight: bold; color: #b71c1c; margin-left: 15px;">
+        Search terms: "@query"
+    </summary>
+
+    <p style="margin-left: 15px; font-size: 1.2em; color: #424242; font-weight: bold;">
+        Overall Sentiment: @sentiment
+    </p>
+
+    <p style="margin-left: 15px; font-size: 1em; color: #666;">
+        <strong>Flesch-Kincaid Grade Level Average:</strong> @BigDecimal(avgFleschKincaid).setScale(2, BigDecimal.RoundingMode.HALF_UP),
+        <strong>Flesch Reading Ease Average:</strong> @BigDecimal(avgFleschReadingEase).setScale(2, BigDecimal.RoundingMode.HALF_UP)
+        <a href="@routes.HomeController.getWordStats(query)" style="color: #b71c1c; text-decoration: underline;">More Stats</a>
+    </p>
+
+    @for((video, index) <- videoList.zipWithIndex) {
+    <div style="margin-left: 50px; margin-bottom: 20px; padding: 15px; background-color: #f9f9f9; border-radius: 8px; border: 1px solid #e0e0e0;">
+        <div style="display: flex; align-items: flex-start;">
+            <div style="flex: 1; margin-right: 20px;">
+                <p style="color: #b71c1c; font-weight: bold;">@(index + 1). Title:
+                    <a href="https://www.youtube.com/watch?v=@video.get("videoId")" target="_blank" style="color: #424242;">
+                    @video.get("title")
+                    </a>
+                </p>
+                <p style="color: #757575;"><strong>Channel:</strong>
+                    <a href="@routes.HomeController.getChannelInfo(video.get("channelId"))" target="_blank" style="color: #b71c1c;">
+                    @video.get("channelTitle")
+                    </a>
+                </p>
+                <p style="color: #424242;"><strong>Description:</strong> @video.get("description")</p>
+                <strong>Flesch-Kincaid Grade Level:</strong> @video.get("grade"),
+                <strong>Flesch Reading Score:</strong> @video.get("score"),
+                <p><a href="@routes.HomeController.viewVideoTags(video.get("videoId"), video.get("title"), video.get("channelTitle"), video.get("channelId"))" style="color: #b71c1c; text-decoration: underline;">Tags</a></p>
+            </div>
+            <div style="flex: 0 0 120px;">
+                <img src="@video.get("thumbnailUrl")" alt="Thumbnail" style="width: 120px; height: 90px; border-radius: 5px;"/>
+            </div>
+        </div>
+    </div>
+    }
+</details>
+<hr style="border: 1px solid #b71c1c; width: 90%; margin: 20px auto;"/>
+}
+}

@@ -1,0 +1,25 @@
+@*
+* Template for displaying word frequency statistics.
+*
+* @author Uday Jain
+* @param wordStats A map containing words and their corresponding frequencies
+* @return HTML representation of the word frequency statistics table
+*@
+
+@(wordStats: Map[String, Long])
+
+@main("Word Statistics") {
+<h2>Word Frequency Statistics</h2>
+<table>
+    <tr>
+        <th>Word</th>
+        <th>Frequency</th>
+    </tr>
+    @for((word, count) <- wordStats) {
+    <tr>
+        <td>@word</td>
+        <td>@count</td>
+    </tr>
+    }
+</table>
+}

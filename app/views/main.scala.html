@@ -1,0 +1,63 @@
+@*
+* Main template for the application with centered layout and styled with red, white, and grey.
+*
+* @param title the title of the page
+* @param content the HTML content to be rendered in the main section
+*@
+
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@title</title>
+    <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        header {
+            background-color: #b71c1c; /* Dark red */
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        main {
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            color: #b71c1c;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>@title</h1>
+</header>
+<main>
+    @content
+</main>
+<footer>
+    <p>&copy; 2024 Hello World. All rights reserved.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,11 @@
+@(message: String)
+
+@main("YouTube Search") {
+<h1>@message</h1>
+
+<!-- Use empty string as a placeholder for the search parameter -->
+<form action="@routes.HomeController.search("")" method="GET">
+<input type="text" name="query" placeholder="Enter search keywords" required/>
+<button type="submit">Search</button>
+  </form>
+}
